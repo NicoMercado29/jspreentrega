@@ -1,45 +1,57 @@
-let nombrejugador = prompt("Hola Bienvenido a nuestro juego trivia Simpsons , Escribi tu nombre")
+listaTareas = [];
 
-alert("Bienvenido "+nombrejugador+ " ¿Listo para jugar? Seleccionando A,B o C")
-
-
-const preguntas= new Array();
+function agregarTarea(){
+    let nuevaTarea = prompt("Ingrese una nueva tarea: "); 
     
-const respuesta= new Array();
+    listaTareas.push(nuevaTarea); 
+    
+    console.log("Tarea agregada: " + nuevaTarea); 
+    
+}
+function mostrarTareas(){
+    console.log("Listas de tareas:"); //muestra este mensaje 
+    for(let i = 0; i < listaTareas.length; i++){ //Utilizamos un for para recorrer el array por completo
+        console.log(i + 1 + ". " + listaTareas[i]); //Se imprime tarea por tarea
+    }
+}
+function borrarTarea(){
+    let indiceTarea = parseInt(prompt("Ingrese el número de la tarea que desea eliminar")); //Guardamos la tarea que vamos a borrar
+    listaTareas.splice(indiceTarea-1, 1); //Eliminamos la tarea indicada
+    console.log("Tarea eliminada");
+    console.log(listaTareas); //muestra la lista final
+}function principal(){
+    let opcion; //Variable que almacena la opción seleccionada del menú
+    do {
+        console.log("Seleccione una opción:"); //Se muestran las opciones del menú
+        console.log("1. Agregar tarea");
+        console.log("2. Mostrar tarea");
+        console.log("3. Borrar tarea");
+        console.log("0. Salir");
 
-preguntas[0]= new Array();
+        opcion = parseInt(prompt("Bienvenido al menú principal, por favor ingrese el número de la opción que desea ejecutar:")); 
+        switch (opcion) { 
+          
+            case1:
+                agregarTarea();
+                break;
+            
+            case2:
+                mostrarTareas();
+                break;
 
-preguntas[0][0]= prompt("¿Cuántos hijos tienen Apu y Manjula? \n A: 6 hijos \n B: 7 hijos \n C: 8 hijos");
-preguntas[0][1]="6 hijos";
-preguntas[0][2]="7 hijos";
-preguntas[0][3]="8 hijos";
+            case3:
+                borrarTarea();
+                break;
 
-respuesta[3]=preguntas[0][0];
+            case0:
+                console.log("Saliendo del programa...");
+                break;
 
-if(respuesta[3]=="c") {
-  alert("UHU");
-}else {
-  alert("D'HO");
+            default:
+                console.log("Opción no válida. Por favor, elige de nuevo.");
+                break;
+        }
+    } while(opcion !== 0);
 }
 
-const nuevapregunta= new Array();
-    
-const nuevarespuesta=new Array();
-
-preguntas[0]=new Array();
-
-preguntas[0][0]= prompt("¿Cual es el nombre completo de Homero? \n a: Homero Jay.S  \n b: Homero Javier.S  \n c:Homero Jorge.S");
-preguntas[0][1]="Homero Jay.S";
-preguntas[0][2]="Homero Javier.S";
-preguntas[0][3]="Homero Jorge.S";
-
-respuesta[1]= preguntas[0][0];
-
-if(respuesta[1]=="a") {
-  alert("UHU");
-}else {
-  alert("D'HO");
-}
-
-
-alert("Gracias por jugar esta trivia");
+principal(); //Inicia el programa
