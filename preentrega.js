@@ -1,61 +1,48 @@
-let listaTareas = [];
+//Carga la lista de tareas del localStorage utilizando JSON 
+let listaTareas = JSON.parse(localStorage.getItem('tareas')) || [];
+
+document.getElementById('agregarBtn').addEventListener('click', agregarTarea);
+document.getElementById('borrarBtn').addEventListener('click', borrarTarea);
+
+// lo llame primero y asi me carga lo que se guardo, me anduvo asi y no lo toque JAJA
+mostrarTareas();
 
 function agregarTarea() {
-    let nuevaTarea = prompt("Ingrese una nueva tarea: ");
-    listaTareas.push(nuevaTarea);
-    console.log("Tarea agregada: " + nuevaTarea);
+    let nuevaTarea = document.getElementById('nuevaTarea').value;
+    if (nuevaTarea) {
+        listaTareas.push(nuevaTarea); 
+        // Guarda en localStorage
+        localStorage.setItem('tareas', JSON.stringify(listaTareas));
+        document.getElementById('nuevaTarea').value = ''; 
+        mostrarTareas();
+        console.log("Tarea agregada: " + nuevaTarea);
+    } else {
+        alert("Por favor, ingrese una tarea.");
+    }
 }
 
 function mostrarTareas() {
-    console.log("Listas de tareas:");
-    for (let i = 0; i < listaTareas.length; i++) {
-        console.log(i + 1 + ". " + listaTareas[i]);
+    const listaElement = document.getElementById('listaTareas');
+    listaElement.innerHTML = ''; // Limpia la lista antes de mostrarla
+    if (listaTareas.length === 0) {
+        listaElement.innerHTML = '<li>No hay tareas en la lista.</li>';
+    } else {
+        listaTareas.forEach((tarea, i) => {
+            listaElement.innerHTML += `<li>${i + 1}. ${tarea}</li>`;
+        });
     }
 }
 
 function borrarTarea() {
-    let indiceTarea = parseInt(prompt("Ingrese el número de la tarea que desea eliminar"));
-    if (indiceTarea > 0 && indiceTarea <= listaTareas.length) {
-        listaTareas.splice(indiceTarea - 1, 1);
-        console.log("Tarea eliminada");
+    let indiceTarea = parseInt(document.getElementById('indiceTarea').value);
+    if (!isNaN(indiceTarea) && indiceTarea > 0 && indiceTarea <= listaTareas.length) {
+        let tareaEliminada = listaTareas.splice(indiceTarea - 1, 1);
+        localStorage.setItem('tareas', JSON.stringify(listaTareas)); // Actualiza localStorage
+        document.getElementById('indiceTarea').value = ''; 
+
+        mostrarTareas();
+        console.log("Tarea eliminada: " + tareaEliminada);
     } else {
-        console.log("Índice no válido.");
+        alert("numero de lista incorrecto, elija un número de tarea correcto.");
     }
-    console.log(listaTareas);
 }
-
-function principal() {
-    let opcion;
-    do {
-        console.log("Seleccione una opción:");
-        console.log("1. Agregar tarea");
-        console.log("2. Mostrar tareas");
-        console.log("3. Borrar tarea");
-        console.log("0. Salir");
-
-        opcion = parseInt(prompt("Bienvenido al menú principal, por favor ingrese el número de la opción que desea ejecutar:"));
-        switch (opcion) {
-            case 1:
-                agregarTarea();
-                break;
-
-            case 2:
-                mostrarTareas();
-                break;
-
-            case 3:
-                borrarTarea();
-                break;
-
-            case 0:
-                console.log("Saliendo del programa...");
-                break;
-
-            default:
-                console.log("Opción no válida. Por favor, elige de nuevo.");
-                break;
-        }
-    } while (opcion !== 0);
-}
-
-principal();
